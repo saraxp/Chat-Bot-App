@@ -1,5 +1,6 @@
 import 'package:chat_bot/chat/presentation/chat_bubble.dart';
 import 'package:chat_bot/chat/presentation/chat_provider.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,22 +14,7 @@ class ChatUi extends StatefulWidget {
 
 class _ChatUiState extends State<ChatUi> with SingleTickerProviderStateMixin {
   final _controller = TextEditingController();
-  late AnimationController _controllerB;
 
-  @override
-  void initState() {
-    super.initState();
-    _controllerB = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    )..repeat();
-  }
-
-  @override
-  void dispose() {
-    _controllerB.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,38 +36,36 @@ class _ChatUiState extends State<ChatUi> with SingleTickerProviderStateMixin {
                               const Text(
                                 'Chat to know',
                                 style: TextStyle(
-                                  fontSize: 32,
+                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
                                 ),
                               ),
-                              AnimatedBuilder(
-                                animation: _controllerB,
-                                builder: (context, child) {
-                                  return ShaderMask(
-                                    shaderCallback: (bounds) {
-                                      return LinearGradient(
-                                        colors: [Color(0xff63d9e9), Color(0xff173236), Color(0xff0a3c43)],
-                                        begin: Alignment(-1 + 2 * _controllerB.value, 0),
-                                        end: Alignment(1 + 2 * _controllerB.value, 0),
-                                        tileMode: TileMode.mirror,
-                                      ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height));
-                                    },
-                                    child: const Text(
-                                      'Anything',
-                                      style: TextStyle(
-                                        fontSize: 36,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white, // Required for ShaderMask
-                                      ),
+                              AnimatedTextKit(
+                                animatedTexts: [
+                                  ColorizeAnimatedText(
+                                    'Anything',
+                                    textStyle: const TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  );
-                                },
+                                    colors: [
+                                      Color(0xff173236),
+                                      Color(0xff63d9e9),
+                                      Color(0xff0a3c43),
+                                    ],
+                                    speed: const Duration(milliseconds: 1000),
+                                  ),
+                                ],
+                                isRepeatingAnimation: true,
+                                repeatForever: true,
+                                pause: Duration(milliseconds: 0),
+                                  displayFullTextOnTap: false,
+                                  stopPauseOnTap: false
                               ),
                             ],
                           ),
                         );
-
                       }
                       return ListView.builder(
                         itemCount: chatProvider.messages.length,
