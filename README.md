@@ -19,6 +19,7 @@ The following dependencies were used in this project-
 
 ## Working
 A video showing the working of the chat bot-
+
 https://github.com/user-attachments/assets/a0dd557a-dc48-47fc-8ce2-fd6189d6d922
 
 
